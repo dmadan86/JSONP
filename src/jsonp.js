@@ -1,8 +1,16 @@
 (function(){
     var encode = window.encodeURIComponent,
         emptyFn = function(){},
+        object_to_uri = function(obj) {
+            var data = [], key;
+            for (key in obj) {
+                data.push(encode(key) + '=' + encode(obj[key]));
+            }
+            return data.join('&');
+        },
         JSONP = function(options) {
-            var callback,
+            var src=[],
+                callback,
                 isLoaded = false,
                 head = window.document.getElementsByTagName('head')[0],
                 params = {
@@ -21,9 +29,12 @@
                 params.success(data);
                 return delete window[callback];
             };
+            src = [
+                params.url,
+                params.url.indexOf('?' === -1) ? '?' : '&',
+                object_to_uri(params.data)
+            ];
             script.src = params.url;
-            script.src += params.url.indexOf('?' === -1) ? '?' : '&';
-            script.src += object_to_uri(params.data);
             script.async = true;
             script.onerror = function(evt) {
                 return params.error({
