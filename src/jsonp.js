@@ -9,24 +9,26 @@
             return data.join('&');
         },
         JSONP = function(options) {
-            var src=[],
+            var document = window.document,
+                src=[],
                 callback,
                 isLoaded = false,
-                head = window.document.getElementsByTagName('head')[0],
+                head = document.getElementsByTagName('head')[0],
                 params = {
                     data: options.data || {},
                     error: options.error || emptyFn,
                     success: options.success || emptyFn,
-                    url: options.url || ''
+                    url: options.url || '',
+                    callback: options.callback || ("jsonp_" + (new Date()).getTime())
                 },
-                script= window.document.createElement('script');
+                script= document.createElement('script');
             options = options ? options : {};
             if (params.url.length === 0) {
                 throw new Error('No URL Provided...');
             }
-            callback = params.data[options.callback_name || 'callback'] = 'jsonp_' + random_string(15);
+            callback = params.callback;
             window[callback] = function(data) {
-                params.success(data);
+                setTimeout(function(){params.success(data);},0);
                 return delete window[callback];
             };
             src = [
@@ -34,7 +36,7 @@
                 params.url.indexOf('?' === -1) ? '?' : '&',
                 object_to_uri(params.data)
             ];
-            script.src = params.url;
+            script.src = src.join("");
             script.async = true;
             script.onerror = function(evt) {
                 return params.error({
