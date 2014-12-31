@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.min.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.2/owl.carousel.min.js"></script>
+    <script type="text/javascript" src="../src/jsonp.js"></script>
+
+    <script>
+        /*Extends String Properties*/
+        if (!String.prototype.format) {
+            String.format = String.prototype.format = function () {
+                var args = arguments;
+                return this.replace(/{(\d+)}/g, function (match, number) {
+                    return typeof args[number] != 'undefined'
+                            ? args[number]
+                            : match
+                            ;
+                });
+            };
+        }
+
+        window.onload = function () {
+            document.getElementById("search").onclick = function () {
+                var query = document.getElementById("query").value;
+                if(query !=  null || query != ""){
+                    searchQuery(query);
+                }
+            };
+        };
+
+        function searchQuery(query) {
+            var url = "http://gdata.youtube.com/feeds/api/videos",
+                data = {
+                    v: 2,
+                    alt: "jsonc",
+                    strict: true,
+                    "max-results": 25,
+                    q: query,
+                    format: 1,
+                    "start-index": 1
+                },
+                success = function (result) {
+                    if (result != null && result.data.items) {
+                        var i = 0,
+                                items = result.data.items,
+                                len = items.length,
+                                str = [];
+                        for (; i < len; i++) {
+                            var data = items[i];
+                            str.push("<li contentID='{0}'>".format(data.id));
+                            str.push("<div style='float:left;margin-right:10px;'>");
+                            str.push('<img class="img img-rounded" src="http://img.youtube.com/vi/{0}/0.jpg" contenttype="youtube" contentID="{1}" contentTitle="{2}" />'.format(data.id, data.id, data.title));
+                            str.push("</div><div class='holder'>");
+                            str.push('<h6>{0}</h6>'.format(data.title));
+                            str.push('<div style="clear:both;"></div>');
+                            str.push('<span class="description">{0}</span>'.format(data.description));
+                            str.push("</div>");
+                            str.push("</li>");
+                        }
+                        $("#result").html(str.join("")).owlCarousel({
+
+                            navigation: false,
+                            pagination: true,
+                            autoPlay: 3000, // set slide intervals here
+                            stopOnHover: true
+                        });
+                    }
+                },
+                error = function () {
+
+                };
+
+            var options = {
+                data: data,
+                error: error,
+                success: success,
+                url: url
+            };
+
+            JSONP(options);
+        }
+
+    </script>
+</head>
+<body>
+<div id="container">
+    <div>
+        <input type="text" id="query"/> <input type="button" id="search" value="search"/>
+    </div>
+    <div id="result">
+
+    </div>
+</div>
+</body>
+</html>

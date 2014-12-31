@@ -1,32 +1,30 @@
 {
-  "name": "JSONP",
-  "description": "A Light Weight JSONP library for Javascript.",
-  "version": "0.0.1",
-  "keywords": [
-    "jsonp",
-    "javascript"
-  ],
-  "author": "Madan",
-  "scripts": {
-    "test": "grunt test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dmadan86/JSONP"
-  },
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    "name": "JSONP",
+    "description": "A Light Weight JSONP library for Javascript.",
+    "version": "0.0.2",
+    "keywords": [
+        "jsonp",
+        "javascript"
+    ],
+    "author": "Madan",
+    "scripts": {
+        "test": "grunt test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dmadan86/JSONP"
+    },
+    "licenses": [
+        {
+            "type": "Apache-2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0"
+        }
+    ],
+    "devDependencies": {
+        "grunt": "*",
+        "grunt-contrib-clean": "*",
+        "grunt-contrib-jshint": "*",
+        "grunt-contrib-uglify": "*",
+        "grunt-contrib-watch": "*"
     }
-  ],
-  "devDependencies": {
-    "grunt": "*",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-coffee": "*",
-    "grunt-contrib-jasmine": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-watch": "*"
-  }
 }
